@@ -1,0 +1,29 @@
+name: "CliqInformer"
+description: "The Github Action is used to Integrate Github and Zoho Cliq by Notifying about the Github Events Performed to the Zoho Cliq Channels."
+
+inputs:
+  github-webhook:
+    description: "Webhook to Integrate with Github"
+    required: true
+  cliq-webhook:
+    description: "Webhook to Integrate with Zoho Cliq"
+    required: true
+  message:
+    description: "The Message to be Delivered to the Cliq Channel"
+    required: true
+    default: "A Github Action has been Performed"
+
+outputs:
+  message-status:
+    description: "The Status of Reception of the Message in the Zoho Cliq Application"
+    value: 200
+
+runs:
+  using: "composite"
+  steps:
+      - name: "Running the Cliq Integration"
+        id: integration
+        shell: bash
+        run: |
+          echo "Running CliqInformer"
+
