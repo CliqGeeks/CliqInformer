@@ -1,6 +1,9 @@
 name: "CliqInformer"
 description: "The Github Action is used to Integrate Github and Zoho Cliq by Notifying about the Github Events Performed to the Zoho Cliq Channels."
 
+branding:
+  icon: 'message-square'
+  color: 'blue'
 inputs:
   github-webhook:
     description: "Webhook to Integrate with Github"
