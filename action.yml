@@ -4,16 +4,16 @@ description: "The Github Action is used to Integrate Github and Zoho Cliq by Not
 branding:
   icon: 'message-square'
   color: 'blue'
+
 inputs:
-  github-webhook:
-    description: "Webhook to Integrate with Github"
-    required: true
   cliq-webhook:
-    description: "Webhook to Integrate with Zoho Cliq"
+    description: "Webhook to Integrate with your Zoho Account in Cliq"
+    required: true
+  channel-endpoint:
+    description: "Endpoint of the Channel you would like to Integrate with in Cliq"
     required: true
   message:
     description: "The Message to be Delivered to the Cliq Channel"
-    required: true
     default: "A Github Action has been Performed"
 
 outputs:
@@ -24,9 +24,17 @@ outputs:
 runs:
   using: "composite"
   steps:
+      - name: Set Up JDK 19
+        uses: actions/setup-java@v3
+        with:
+          java-version: '19'
+          distribution: 'temurin'
+      - name: Set Up Checkout
+        uses: actions/checkout@v3
       - name: "Running the Cliq Integration"
-        id: integration
         shell: bash
         run: |
-          echo "Running CliqInformer"
+          JAVA=$JAVA_HOME_19_X64/bin/java
+          CONNECTOR=$GITHUB_ACTION_PATH/src/CliqInformer.java
+          $JAVA $CONNECTOR ${{inputs.cliq-webhook}} ${{inputs.channel-endpoint}} "A $GITHUB_EVENT_NAME has been Triggered at $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/"
 
