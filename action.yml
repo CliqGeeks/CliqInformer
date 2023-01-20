@@ -14,7 +14,6 @@ inputs:
     required: true
   message:
     description: "The Message to be Delivered to the Cliq Channel"
-    default: "A Github Action has been Performed"
 
 outputs:
   message-status:
@@ -36,5 +35,4 @@ runs:
         run: |
           JAVA=$JAVA_HOME_19_X64/bin/java
           CONNECTOR=$GITHUB_ACTION_PATH/src/CliqInformer.java
-          $JAVA $CONNECTOR ${{inputs.cliq-webhook}} ${{inputs.channel-endpoint}} "A $GITHUB_EVENT_NAME has been Triggered at $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/"
-
+            $JAVA $CONNECTOR ${{inputs.cliq-webhook}} ${{inputs.channel-endpoint}} "$GITHUB_EVENT_NAME" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_WORKFLOW" "$GITHUB_ACTOR" "$GITHUB_RUN_ID" "${{inputs.message}}"
