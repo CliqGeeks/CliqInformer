@@ -1,5 +1,5 @@
 name: "CliqInformer"
-description: "The Github Action is used to Integrate Github and Zoho Cliq by Notifying about the Github Events Performed to the Zoho Cliq Channels. Mention (me) to Link your Github Account and (repo) to link your Github Repository and (workflow) to link the workflow to be Performed in the Message such as 'A Github Action has been Performed at (repo) by (me)' will send a message as 'A Github Action has been Performed at https://www.github.com/user_name/repository_name by user_name'"
+description: "The Github Action integrates Github and Zoho Cliq by notifying about the Github Events Performed to the Cliq Channels."
 
 branding:
   icon: 'message-square'

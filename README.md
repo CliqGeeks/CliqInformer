@@ -11,4 +11,16 @@ CliqInformer requires the following inputs to Integrate the Github Actions with 
   - custom = In case you have specified the default Message to be Sent if not Specified
   - default = In case you want the default Cliq Informer Message to be Sent to the Cliq Channel
   
+In the Messages The Following Replacements will Occur:
+- (me) = The Link to the Actor's Github Profile
+- (repo) = The Link to the Repository where the Event Occurs
+- (workflow) = The Link to the Workflow which Triggered the Message
+
+Example:
+A Github Action is Triggered by (me) at (repo).
+
+will change to 
+
+A Github Action is Triggered by user_name at https://www.github.com/user_name/repository_name 
+  
 Upon Successfully Providing the Inputs as per Criteria, The Message will be Successfully Sent to the Cliq Channel.
