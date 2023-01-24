@@ -6,15 +6,13 @@ CliqInformer requires the following inputs to Integrate the Github Actions with 
 - Cliq Channel API Endpoint or Unique Name
 - Induividual Messages for the Messages of each of the Github Events (in the name of event-message)
 - A default Message which you want to sent if The Message is not Specified for that Event.
-- A Non Specific Message which should be
-  - none = In case you don't want to send any Message if not Specified
-  - custom = In case you have specified the default Message to be Sent if not Specified
-  - default = In case you want the default Cliq Informer Message to be Sent to the Cliq Channel
   
 In the Messages The Following Replacements will Occur:
-- (me) = The Link to the Actor's Github Profile
-- (repo) = The Link to the Repository where the Event Occurs
-- (workflow) = The Link to the Workflow which Triggered the Message
+- (me) = The Link to the Actor's Github Profile (i.e. https://www.github.com/user_name)
+- (repo) = The Link to the Repository where the Event Occurs (i.e. https://www.github.com/user_name/repository_name)
+- (workflow) = The Link to the Workflow which Triggered the Message (i.e. https://www.github.com/user_name/)
+- (event) = The Event that is Performed
+- (action) = The Action that is Performed with the Event
 
 Example:
 A Github Action is Triggered by (me) at (repo).
@@ -23,4 +21,15 @@ will change to
 
 A Github Action is Triggered by user_name at https://www.github.com/user_name/repository_name 
   
-Upon Successfully Providing the Inputs as per Criteria, The Message will be Successfully Sent to the Cliq Channel.
+Upon Successfully Providing the Inputs as per Criteria, The Message will be Successfully Sent to the Cliq Channel
+
+The Github Actions that Trigger an Event are listed below among which all Events are Supported by CliqInformer
+
+|    branch_protection_rule    |          check_run          |          check_suite         |            create            |           delete            |          deployment         |      deployment_status      |
+|            :----:            |           :----:            |            :----:            |            :----:            |           :----:            |            :----:            |           :----:            |
+| **discussion**               | **discussion_comment**      | **fork**                     | **gollum**                   | **issue_comment**           | **issues**                  | **label**                     |
+| **merge_group**              | **milestone**               | **page_build**               | **project**                  | **project_card**            | **project_column**           | **public**                    |
+| **pull_request**             | **issue_comment**           | **pull_request_review**      |**pull_request_review_comment**| **pull_request_target**    | **push**                      | **registry_package**          |
+| **schedule**                 | **status**                  | **watch**                    | **workflow_call**            | **workflow_dispatch**       | **workflow_run**               |                             |
+
+To use Custom Message for an Event event Specify the custom message as event-message Input to CliqInformer (for eg. push-message for custom message for a push event)

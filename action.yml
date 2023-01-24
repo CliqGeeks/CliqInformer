@@ -111,7 +111,7 @@ runs:
       - name: Setting Message Content
         id: action-finder
         shell: bash
-        run: |      
+        run: |
           if ${{ github.event_name == 'branch_protection_rule' }}
           then
             echo "message=${{inputs.branch-protection-rule-message}}" >> $GITHUB_ENV
@@ -222,9 +222,12 @@ runs:
         shell: bash
         id: action-undefined
         run: |
-          if ${{env.message == '' && inputs.non-specific-message == 'custom' }}
+          if ${{ env.message == '' && inputs.default-message != '' }}
           then
             echo "message=${{inputs.default-message}}" >> $GITHUB_ENV
+          elif ${{ env.message == '' }}
+          then
+             echo "message=The Workflow (workflow) is triggered by a (event) (action) by (me) at Repository (repo)" >> $GITHUB_ENV
           fi
       - name: "Running the Cliq Integration"
         id: send-message
@@ -234,10 +237,15 @@ runs:
           CONNECTOR=$GITHUB_ACTION_PATH/src/CliqInformer.java
           if ${{ env.message != '' }}
           then
-            $JAVA $CONNECTOR ${{inputs.cliq-webhook}} ${{inputs.channel-endpoint}} "$GITHUB_EVENT_NAME" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_WORKFLOW" "$GITHUB_ACTOR" "$GITHUB_RUN_ID" "${{env.message}}"
+            $JAVA $CONNECTOR ${{inputs.cliq-webhook}} ${{inputs.channel-endpoint}} "$GITHUB_EVENT_NAME" "${{ github.event.action }}" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_WORKFLOW" "$GITHUB_ACTOR" "$GITHUB_RUN_ID" "${{env.message}}"
+          fi
+      - name: "Displaying Output"
+        id: display-output
+        shell: bash
+        run: |
+          if ${{ steps.send-message.outputs.message-status == '204' }} 
+          then 
             echo "Message sent to Cliq"
-            echo "message-status=200" >> $GITHUB_OUTPUT
           else
             echo "Message Not Found"
-            echo "message-status=400" >> $GITHUB_OUTPUT
           fi
