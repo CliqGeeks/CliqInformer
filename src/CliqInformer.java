@@ -52,7 +52,13 @@ public class CliqInformer {
 			String ActorURL = ServerURL + "/" + Actor;
 			String RepositoryURL = ServerURL + "/" + Repository;
 			String WorkflowURL = RepositoryURL + "/actions/runs/" + RunId;
-			String RefURL = RepositoryURL + "/tree/" + Ref;
+			String RefURL = Repository;
+			if(Ref.contains("pull"))
+			  RefURL = RefURL + "/pull/";
+			else
+			  RefURL = RefURL + "/tree/";
+			Ref = Ref.split("/")[2];
+			RefURL = RefURL + Ref;
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
 			if(Action.equals(""))
         Action = "made";
