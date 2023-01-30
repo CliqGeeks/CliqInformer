@@ -227,7 +227,7 @@ runs:
             echo "message=${{inputs.default-message}}" >> $GITHUB_ENV
           elif ${{ env.message == '' }}
           then
-             echo "message=The Workflow (workflow) is triggered by a (event) (action) by (me) at Repository (repo)" >> $GITHUB_ENV
+             echo "message=The Workflow (workflow) is triggered by a (event) (action) by (me) at Repository (repo) under Branch/Tag (ref)" >> $GITHUB_ENV
           fi
       - name: "Running the Cliq Integration"
         id: send-message
@@ -237,7 +237,7 @@ runs:
           CONNECTOR=$GITHUB_ACTION_PATH/src/CliqInformer.java
           if ${{ env.message != '' }}
           then
-            $JAVA $CONNECTOR ${{inputs.cliq-webhook}} ${{inputs.channel-endpoint}} "$GITHUB_EVENT_NAME" "${{ github.event.action }}" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_WORKFLOW" "$GITHUB_ACTOR" "$GITHUB_RUN_ID" "${{env.message}}"
+            $JAVA $CONNECTOR ${{inputs.cliq-webhook}} ${{inputs.channel-endpoint}} "$GITHUB_EVENT_NAME" "${{ github.event.action }}" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_WORKFLOW" "$GITHUB_ACTOR" "$GITHUB_RUN_ID" "${{env.message}}" "$GITHUB_REF_NAME"
           fi
       - name: "Displaying Output"
         id: display-output

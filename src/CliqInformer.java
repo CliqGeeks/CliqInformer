@@ -37,12 +37,14 @@ public class CliqInformer {
 			String Action = args[3];
 			String ServerURL = args[4];
 			String Repository = args[5];
-			String RepositoryURL = ServerURL + "/" + Repository;
+			String RepositoryURL = ServerURL + "/" + Repository + "/tree/" + Ref;
 			String Workflow = args[6];
 			String Actor = args[7];
 			String ActorURL = ServerURL + "/" + Actor;
 			String RunId = args[8];
 			String WorkflowURL = RepositoryURL + "/actions/runs/" + RunId;
+			String Ref = args[9];
+			String RefURL = RepositoryURL;
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
 			if(Action.equals(""))
         Action = "made";
@@ -52,6 +54,7 @@ public class CliqInformer {
 			message = message.replace("(repo)","[" + Repository + "](" + RepositoryURL + ")" );
 			message = message.replace("(event)",Event);
 			message = message.replace("(action)",Action);
+			message = message.replace("(ref)","[" + Ref + "](" + RefURL + ")" )
 			String TextParams = "{\n\"text\":\"" + message + "\",\n\"bot\":\n{\n\"name\":\"CliqInformer\",\n\"image\":\"" + CliqInformerURL + "\"\n}}\n";
 			connection = (HttpURLConnection) new URL(CliqChannelLink + "?zapikey=" + CliqWebhookToken).openConnection();
 			connection.setRequestMethod("POST");
