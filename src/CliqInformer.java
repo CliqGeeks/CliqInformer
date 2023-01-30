@@ -59,7 +59,7 @@ public class CliqInformer {
 			message = message.replace("(repo)","[" + Repository + "](" + RepositoryURL + ")" );
 			message = message.replace("(event)",Event);
 			message = message.replace("(action)",Action);
-			message = message.replace("(ref)","[" + Ref + "](" + RefURL + ")" )
+			message = message.replace("(ref)","[" + Ref + "](" + RefURL + ")" );
 			String TextParams = "{\n\"text\":\"" + message + "\",\n\"bot\":\n{\n\"name\":\"CliqInformer\",\n\"image\":\"" + CliqInformerURL + "\"\n}}\n";
 			connection = (HttpURLConnection) new URL(CliqChannelLink + "?zapikey=" + CliqWebhookToken).openConnection();
 			connection.setRequestMethod("POST");
