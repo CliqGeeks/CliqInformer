@@ -35,11 +35,14 @@ public class CliqInformer {
 			  Event += s.substring(0,1).toUpperCase() + s.substring(1) + " ";
 			Event = Event.trim();
 			String Action = args[3];
-			String[] ActionWords = Action.split("_");
-			Action = new String();
-			for(String s: ActionWords)
-			  Action += s.substring(0,1).toUpperCase() + s.substring(1) + " ";
-			Action = Action.trim();
+			if(!Action.equals(""))
+			{
+			  String[] ActionWords = Action.split("_");
+			  Action = new String();
+			  for(String s: ActionWords)
+			    Action += s.substring(0,1).toUpperCase() + s.substring(1) + " ";
+			  Action = Action.trim();
+			}
 			String ServerURL = args[4];
 			String Repository = args[5];
 			String Workflow = args[6];
@@ -47,8 +50,8 @@ public class CliqInformer {
 			String RunId = args[8];
 			String Ref = args[9];
 			String ActorURL = ServerURL + "/" + Actor;
-			String WorkflowURL = RepositoryURL + "/actions/runs/" + RunId;
 			String RepositoryURL = ServerURL + "/" + Repository + "/tree/" + Ref;
+			String WorkflowURL = RepositoryURL + "/actions/runs/" + RunId;
 			String RefURL = RepositoryURL;
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
 			if(Action.equals(""))
