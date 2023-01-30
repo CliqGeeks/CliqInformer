@@ -35,6 +35,11 @@ public class CliqInformer {
 			  Event += s.substring(0,1).toUpperCase() + s.substring(1) + " ";
 			Event = Event.trim();
 			String Action = args[3];
+			String[] ActionWords = Action.split("_");
+			Action = new String();
+			for(String s: ActionWords)
+			  Action += s.substring(0,1).toUpperCase() + s.substring(1) + " ";
+			Action = Action.trim();
 			String ServerURL = args[4];
 			String Repository = args[5];
 			String RepositoryURL = ServerURL + "/" + Repository + "/tree/" + Ref;
