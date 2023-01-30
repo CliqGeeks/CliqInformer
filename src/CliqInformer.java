@@ -40,7 +40,7 @@ public class CliqInformer {
 			  String[] ActionWords = Action.split("_");
 			  Action = new String();
 			  for(String s: ActionWords)
-			    Action += s.substring(0,1).toUpperCase() + s.substring(1) + " ";
+			    Action += s + " ";
 			  Action = Action.trim();
 			}
 			String ServerURL = args[4];
@@ -50,13 +50,13 @@ public class CliqInformer {
 			String RunId = args[8];
 			String Ref = args[9];
 			String ActorURL = ServerURL + "/" + Actor;
-			String RepositoryURL = ServerURL + "/" + Repository + "/tree/" + Ref;
+			String RepositoryURL = ServerURL + "/" + Repository;
 			String WorkflowURL = RepositoryURL + "/actions/runs/" + RunId;
-			String RefURL = RepositoryURL;
+			String RefURL = RepositoryURL + "/tree/" + Ref;
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
 			if(Action.equals(""))
         Action = "made";
-			message = args[9];
+			message = args[10];
 			message = message.replace("(me)","[" + Actor + "](" + ActorURL + ")");
 			message = message.replace("(workflow)","[" + Workflow + "](" + WorkflowURL + ")" );
 			message = message.replace("(repo)","[" + Repository + "](" + RepositoryURL + ")" );

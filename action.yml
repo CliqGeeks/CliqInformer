@@ -237,7 +237,7 @@ runs:
           CONNECTOR=$GITHUB_ACTION_PATH/src/CliqInformer.java
           if ${{ env.message != '' }}
           then
-            $JAVA $CONNECTOR ${{inputs.cliq-webhook}} ${{inputs.channel-endpoint}} "$GITHUB_EVENT_NAME" "${{ github.event.action }}" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_WORKFLOW" "$GITHUB_ACTOR" "$GITHUB_RUN_ID" "${{env.message}}" "$GITHUB_REF_NAME"
+            $JAVA $CONNECTOR ${{inputs.cliq-webhook}} ${{inputs.channel-endpoint}} "$GITHUB_EVENT_NAME" "${{ github.event.action }}" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_WORKFLOW" "$GITHUB_ACTOR" "$GITHUB_RUN_ID" "$GITHUB_REF_NAME" "${{env.message}}"
           fi
       - name: "Displaying Output"
         id: display-output
