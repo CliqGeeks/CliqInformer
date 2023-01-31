@@ -52,7 +52,7 @@ public class CliqInformer {
 			String ActorURL = ServerURL + "/" + Actor;
 			String RepositoryURL = ServerURL + "/" + Repository;
 			String WorkflowURL = RepositoryURL + "/actions/runs/" + RunId;
-			String RefURL = Repository;
+			String RefURL = RepositoryURL;
 			if(Ref.contains("pull"))
 			  RefURL = RefURL + "/pull/";
 			else
