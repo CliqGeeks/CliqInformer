@@ -150,7 +150,9 @@ runs:
             echo "message=${{inputs.issue-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issue_comment' }}
           then
-            echo "message=${{inputs.pull-request-comment-message}}" >> $GITHUB_ENV
+            MESSAGE='${{inputs.pull-request-comment-message}}'
+            MESSAGE=${MESSAGE//(event)/"pull request comment"}
+            echo "message=$MESSAGE" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issues' }}
           then
             echo "message=${{inputs.issues-message}}" >> $GITHUB_ENV
@@ -211,15 +213,9 @@ runs:
           elif ${{ github.event_name == 'watch' }}
           then
             echo "message=${{inputs.watch-message}}" >> $GITHUB_ENV
-          elif ${{ github.event_name == 'workflow_call' }}
-          then
-            echo "message=${{inputs.workflow-call-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'workflow_dispatch' }}
           then
             echo "message=${{inputs.workflow-dispatch-message}}" >> $GITHUB_ENV
-          elif ${{ github.event_name == 'workflow_run' }}
-          then
-            echo "message=${{inputs.workflow-run-message}}" >> $GITHUB_ENV
           fi
       - name: "Setting Message"
         shell: bash
