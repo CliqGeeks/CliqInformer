@@ -63,11 +63,11 @@ inputs:
   pull-request-review-comment-message:
     description: "The Message to be Delivered to the Cliq Channel during a pull request review comment event"
   pull-request-target-message:
-    description: "The Message to be Delivered to the Cliq Channel during a pull request comment event"
+    description: "The Message to be Delivered to the Cliq Channel during a pull request target event"
   push-message:
     description: "The Message to be Delivered to the Cliq Channel during a push event"
-  register-package-message:
-    description: "The Message to be Delivered to the Cliq Channel during a register package event"
+  registry-package-message:
+    description: "The Message to be Delivered to the Cliq Channel during a registry package event"
   release-message:
     description: "The Message to be Delivered to the Cliq Channel during a release event"
   repository-dispatch-message:
@@ -130,7 +130,7 @@ runs:
           elif ${{ github.event_name == 'deployment' }}
           then
             echo "message=${{inputs.deployment-message}}" >> $GITHUB_ENV
-          elif ${{ github.event_name == 'deployment-status' }}
+          elif ${{ github.event_name == 'deployment_status' }}
           then
             echo "message=${{inputs.deployment-status-message}}" >> $GITHUB_ENV
           elif ${{github.event_name == 'discussion' }}
@@ -145,7 +145,7 @@ runs:
           elif ${{ github.event_name == 'gollum' }}
           then
             echo "message=${{inputs.gollum-message}}" >> $GITHUB_ENV
-          elif ${{ github.event_name == 'issue_comment' && !github.event.issues.pull_request }}
+          elif ${{ github.event_name == 'issue_comment' && !github.event.issue.pull_request }}
           then
             echo "message=${{inputs.issue-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issue_comment' }}
@@ -161,6 +161,9 @@ runs:
           then
             echo "message=${{inputs.merge-group-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'milestone' }}
+          then
+            echo "message=${{inputs.milestone-message}}" >> $GITHUB_ENV
+          elif ${{ github.event_name == 'page_build' }}
           then
             echo "message=${{inputs.page-build-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'project' }}
@@ -184,9 +187,9 @@ runs:
           elif ${{ github.event_name == 'pull_request_review_comment' }}
           then
             echo "message=${{inputs.pull-request-review-comment-message}}" >> $GITHUB_ENV
-          elif ${{ github.event_name == 'pull_target' }}
+          elif ${{ github.event_name == 'pull_request_target' }}
           then
-            echo "message=${{inputs.pull-target-message}}" >> $GITHUB_ENV
+            echo "message=${{inputs.pull-request-target-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'push' }}
           then
             echo "message=${{inputs.push-message}}" >> $GITHUB_ENV
