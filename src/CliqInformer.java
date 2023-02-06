@@ -73,7 +73,7 @@ public class CliqInformer {
 			message = message.replace("(repo)","[" + Repository + "](" + RepositoryURL + ")" );
 			message = message.replace("(event)","*" + Event + "*");
 			message = message.replace("(action)",Action);
-			message = message.replace("(ref)","[" + Ref + "](" + RefURL + ")" );
+			message = message.replace("(ref)",RefType + " [" + Ref + "](" + RefURL + ")" );
 			if(message.length() > MAX_MESSAGE_LENGTH)
 			{
 			  message = CustomMessage;
@@ -82,7 +82,7 @@ public class CliqInformer {
 			  message = message.replace("(repo)","*" + Repository + "*" );
 			  message = message.replace("(event)","*" + Event + "*");
 			  message = message.replace("(action)",Action);
-			  message = message.replace("(ref)","*" + Ref + "*" );
+			  message = message.replace("(ref)",RefType + " *" + Ref + "*" );
 			}
 			ArrayList<String> messages = new ArrayList<String>();
 			for(int i = 0 ; i < message.length() ;)
