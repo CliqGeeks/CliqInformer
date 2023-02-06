@@ -6,9 +6,6 @@ branding:
   color: 'blue'
 
 inputs:
-  cliq-webhook:
-    description: "Webhook to Integrate with your Zoho Account in Cliq"
-    required: true
   channel-endpoint:
     description: "Endpoint of the Channel you would like to Integrate with in Cliq"
     required: true
@@ -86,6 +83,9 @@ inputs:
     description: "The Message to be Delivered to the Cliq Channel during a workflow run event"
   default-message:
     description: "The Message that is customized to be sent to the Cliq Channel when an action other than specified Occurs"      
+  set-message-if-none:
+    description: "If true, Sets Message to default-message else, Doesn't Set Message If No Message given for an Action"
+    default: truel=l;
   
 outputs:
   message-status:
@@ -148,6 +148,7 @@ runs:
           then
             MESSAGE='${{inputs.pull-request-comment-message}}'
             MESSAGE=${MESSAGE//(event)/"Pull Request Comment"}
+            MESSAGE=${MESSAGE//(ref)/"FROM ${GITHUB_HEAD_REF} TO ${GITHUB_BASE_REF}"}
             echo "message=$MESSAGE" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issues' }}
           then
@@ -220,7 +221,7 @@ runs:
           if ${{ env.message == '' && inputs.default-message != '' }}
           then
             echo "message=${{inputs.default-message}}" >> $GITHUB_ENV
-          elif ${{ env.message == '' }}
+          elif ${{ env.message == '' && inputs.set-message-if-none }}
           then
              echo "message=The Workflow (workflow) is triggered by a (event) (action) by (me) at Repository (repo) under Branch/Tag (ref)" >> $GITHUB_ENV
           fi
@@ -230,9 +231,9 @@ runs:
         run: |
           JAVA=$JAVA_HOME_19_X64/bin/java
           CONNECTOR=$GITHUB_ACTION_PATH/src/CliqInformer.java
-          if ${{ env.message != '' }}
+          if ${{ env.message != '' &&}}
           then
-            $JAVA $CONNECTOR ${{inputs.cliq-webhook}} ${{inputs.channel-endpoint}} "$GITHUB_EVENT_NAME" "${{ github.event.action }}" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_WORKFLOW" "$GITHUB_ACTOR" "$GITHUB_RUN_ID" "$GITHUB_REF" "${{env.message}}"
+            $JAVA $CONNECTOR ${{inputs.channel-endpoint}} "$GITHUB_EVENT_NAME" "${{ github.event.action }}" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_WORKFLOW" "$GITHUB_ACTOR" "$GITHUB_RUN_ID"  "$GITHUB_REF" "$GITHUB_REF_TYPE" "${{env.message}}"
           fi
       - name: "Displaying Output"
         id: display-output

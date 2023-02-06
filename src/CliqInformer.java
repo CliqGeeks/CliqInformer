@@ -20,25 +20,21 @@ public class CliqInformer {
 		System.out.println("Calling Cliq...");
 		HttpURLConnection connection;
 		Integer MAX_MESSAGE_LENGTH = 4096;
-		String Message_BREAK = "\\\n";
+		String Message_BREAK = "\\n";
 		Integer status = 400;
 		StringBuffer responseContent = new StringBuffer();
 		try {
       boolean error = false;
 			String message;
 			String CustomMessage;
-			String CliqWebhookToken = args[0];
-			String CliqChannelLink = args[1];
-			if(!CliqChannelLink.contains("https://cliq.zoho.com/api/v2/channelsbyname/") || !CliqChannelLink.contains("message"))
-        if(CliqChannelLink.matches("[a-z]+"))
-          CliqChannelLink = "https://cliq.zoho.com/api/v2/channelsbyname/" + CliqChannelLink + "/message";			  
-			String Event = args[2];
+			String CliqChannelLink = args[0];		  
+			String Event = args[1];
 			String[] EventWords = Event.split("_");
 			Event = new String();
 			for(String s: EventWords)
 			  Event += s.substring(0,1).toUpperCase() + s.substring(1) + " ";
 			Event = Event.trim();
-			String Action = args[3];
+			String Action = args[2];
 			if(!Action.equals(""))
 			{
 			  String[] ActionWords = Action.split("_");
@@ -47,12 +43,13 @@ public class CliqInformer {
 			    Action += s + " ";
 			  Action = Action.trim();
 			}
-			String ServerURL = args[4];
-			String Repository = args[5];
-			String Workflow = args[6];
-			String Actor = args[7];
-			String RunId = args[8];
-			String Ref = args[9];
+			String ServerURL = args[3];
+			String Repository = args[4];
+			String Workflow = args[5];
+			String Actor = args[6];
+			String RunId = args[7];
+			String Ref = args[8];
+			String RefType = args[9]
 			String ActorURL = ServerURL + "/" + Actor;
 			String RepositoryURL = ServerURL + "/" + Repository;
 			String WorkflowURL = RepositoryURL + "/actions/runs/" + RunId;
@@ -93,9 +90,9 @@ public class CliqInformer {
 			  {
 			    split_message = message.substring(i,i+MAX_MESSAGE_LENGTH);
 			    int displaced_length = MAX_MESSAGE_LENGTH;
-			    if(split_message.contains("\\n"))
+			    if(split_message.contains(MESSAGE_BREAK))
 			    {
-			      displaced_length = split_message.lastIndexOf("\\n") + 2;
+			      displaced_length = split_message.lastIndexOf(MESSAGE_BREAK) + 2;
 			      split_message = message.substring(i,i+displaced_length);
 			      split_message = split_message.replaceAll("\\\\n","");
 			    }
