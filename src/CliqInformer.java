@@ -20,7 +20,7 @@ public class CliqInformer {
 		System.out.println("Calling Cliq...");
 		HttpURLConnection connection;
 		Integer MAX_MESSAGE_LENGTH = 4096;
-		String Message_BREAK = "\\n";
+		String MESSAGE_BREAK = "\\n";
 		Integer status = 400;
 		StringBuffer responseContent = new StringBuffer();
 		try {
