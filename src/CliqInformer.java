@@ -49,7 +49,7 @@ public class CliqInformer {
 			String Actor = args[6];
 			String RunId = args[7];
 			String Ref = args[8];
-			String RefType = args[9]
+			String RefType = args[9];
 			String ActorURL = ServerURL + "/" + Actor;
 			String RepositoryURL = ServerURL + "/" + Repository;
 			String WorkflowURL = RepositoryURL + "/actions/runs/" + RunId;
