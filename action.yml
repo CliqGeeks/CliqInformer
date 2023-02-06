@@ -85,11 +85,7 @@ inputs:
   workflow-run-message:
     description: "The Message to be Delivered to the Cliq Channel during a workflow run event"
   default-message:
-    description: "The Message that is customized to be sent to the Cliq Channel when an action other than specified Occurs"
-  non-specific-message:
-    description: "Specify the Message if not Specified in Workflow  default for CliqInformer Generated Message or custom for Developer Specified Custom Message in default-message or none for No Message to be Sent"
-    default: 'default'
-      
+    description: "The Message that is customized to be sent to the Cliq Channel when an action other than specified Occurs"      
   
 outputs:
   message-status:
