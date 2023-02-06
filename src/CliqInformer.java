@@ -28,6 +28,8 @@ public class CliqInformer {
 			String message;
 			String CustomMessage;
 			String CliqChannelLink = args[0];		  
+			if(!CliqChannelLink.contains("message") || !CliqChannelLink.contains("https://cliq.zoho") || !CliqChannelLink.contains("/api/v2/") || !CliqChannelLink.contains("?zapikey="))
+			  error = true;
 			String Event = args[1];
 			String[] EventWords = Event.split("_");
 			Event = new String();
@@ -119,7 +121,7 @@ public class CliqInformer {
 			{
 			  msg = msg.replace("\"","'");
 			  String TextParams = "{\n\"text\":\"" + msg + "\",\n\"bot\":\n{\n\"name\":\"CliqInformer\",\n\"image\":\"" + CliqInformerURL + "\"\n}}\n";
-			  connection = (HttpURLConnection) new URL(CliqChannelLink + "?zapikey=" + CliqWebhookToken).openConnection();
+			  connection = (HttpURLConnection) new URL(CliqChannelLink).openConnection();
 			  connection.setRequestMethod("POST");
 			  connection.setRequestProperty("Content-Type","application/json");
 			  connection.setDoOutput(true);
