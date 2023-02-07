@@ -88,6 +88,7 @@ inputs:
     description: "The Message that is customized to be sent to the Cliq Channel when an action other than specified Occurs"      
   set-message-if-none:
     description: "If true, Sets Message to default-message else, Doesn't Set Message If No Message given for an Action"
+    default: true
   
 outputs:
   message-status:
