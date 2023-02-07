@@ -223,7 +223,7 @@ runs:
           if ${{ env.message == '' && inputs.default-message != '' }}
           then
             echo "message=${{inputs.default-message}}" >> $GITHUB_ENV
-            if ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
+            if ${{ github.event_name == 'issue_comment' && !!github.event.issue.pull_request }}
             then
               MESSAGE='${{inputs.default-message}}'
               MESSAGE=${MESSAGE//(event)/"Pull Request Comment"}
@@ -233,7 +233,7 @@ runs:
           then
             MESSAGE='The Workflow (workflow) is triggered by a (event) (action) by (me) at Repository (repo) under (ref)'
             echo "message=$MESSAGE" >> $GITHUB_ENV
-            if ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
+            if ${{ github.event_name == 'issue_comment' && !!github.event.issue.pull_request }}
             then
               MESSAGE=${MESSAGE//(event)/"Pull Request Comment"}
               echo "message=$MESSAGE" >> $GITHUB_ENV
