@@ -167,13 +167,7 @@ public class CliqInformer {
 			  ERROR_MESSAGE = splitMessage(ERROR_MESSAGE);
 			else if(status == 204)
 			  ERROR_MESSAGE = "CliqInformer executed Successfully";
-			var file = Path.of(githubOutput);
-			if(file.getParent() != null) Files.createDirectories(file.getParent());
-			var lines = ("message-status=" + status).lines().toList();
-			Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			lines = ("error-message=" + ERROR_MESSAGE).lines().toList();
-			Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			System.out.println("Message - Status : " + status);
+			writeGithubOutput(status,ERROR_MESSAGE);
 		}  catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -221,6 +215,6 @@ public class CliqInformer {
 		Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
 		lines = ("error-message=" + ErrorMessage).lines().toList();
 		Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-		System.out.println("Message - Status : " + status);
+		System.out.println("Message - Status : " + Status);
 	}
 }
