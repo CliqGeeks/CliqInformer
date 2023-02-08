@@ -152,7 +152,7 @@ public class CliqInformer {
 				  reader.close();
 			  }
 			  if(status != 204)
-			    ERROR_MESSAGE = responseContent;
+			    ERROR_MESSAGE = responseContent.toString();
 			}
 			var githubOutput = System.getenv("GITHUB_OUTPUT");
 			if(Objects.nonNull(githubOutput))
