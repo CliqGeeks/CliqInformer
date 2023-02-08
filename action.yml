@@ -94,6 +94,9 @@ outputs:
   message-status:
     description: "The Status of Reception of the Message in the Zoho Cliq Application"
     value: ${{ steps.send-message.outputs.message-status }}
+  error-message:
+    description: "The description about the Error that has Occurs in the Message Passer"
+    value: ${{ steps.send-message.outputs.error-message }}
 
 runs:
   using: "composite"
@@ -255,7 +258,8 @@ runs:
         run: |
           if ${{ steps.send-message.outputs.message-status == '204' }} 
           then 
-            echo "Message sent to Cliq"
+            echo "Message sent to Cliq Successfully"
           else
             echo "Message Not Found"
           fi
+          echo "${{steps.send-message.outputs.error-message}}"

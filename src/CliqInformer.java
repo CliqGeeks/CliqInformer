@@ -22,14 +22,17 @@ public class CliqInformer {
 		Integer MAX_MESSAGE_LENGTH = 4096;
 		String MESSAGE_BREAK = "\\n";
 		Integer status = 400;
+		boolean MESSAGE_SEND_FAILURE_ERROR = true;
+		boolean INVALID_ENDPOINT_ERROR = true;
+		boolean GITHUB_ERROR = true;
+		String ERROR_MESSAGE = new String("Multiple Errors Occur");
 		StringBuffer responseContent = new StringBuffer();
 		try {
-      boolean error = false;
 			String message;
 			String CustomMessage;
 			String CliqChannelLink = args[0];		  
-			if(!CliqChannelLink.contains("message") || !CliqChannelLink.contains("https://cliq.zoho") || !CliqChannelLink.contains("/api/v2/") || !CliqChannelLink.contains("?zapikey="))
-			  error = true;
+			if(CliqChannelLink.contains("message") && CliqChannelLink.contains("https://cliq.zoho") && CliqChannelLink.contains("/api/v2/") && CliqChannelLink.contains("?zapikey="))
+			  INVALID_ENDPOINT_ERROR = false;
 			String Event = args[1];
 			String[] EventWords = Event.split("_");
 			Event = new String();
@@ -151,27 +154,31 @@ public class CliqInformer {
 			var githubOutput = System.getenv("GITHUB_OUTPUT");
 			if(status == 204)
 			{
-			  if(githubOutput == null)
-			    error = true;
+			  if(githubOutput != null)
+			    GITHUB_ERROR = false;
+			  MESSAGE_SEND_FAILURE_ERROR = false;
 			}
-			else
-			{
-			  error = true;
-			}
-			Integer value = 400;
-	    if(!error)
-	      value = 204;
+			if(INVALID_ENDPOINT_ERROR)
+			  ERROR_MESSAGE = "Invalid Endpoint. Endpoint must be of format : <Zoho Cliq Channel API Endpoint>?zapikey=<Zoho Cliq Webhook Token>";
+			else if(GITHUB_ERROR)
+			  ERROR_MESSAGE = "Environmental Variable GITHUB_OUTPUT missing";
+			else if(MESSAGE_SEND_FAILURE_ERROR)
+			  ERROR_MESSAGE = "Sorry, we couldn't process your request due to a technical error. Please try again later."
+			else if(status == 204)
+			  ERROR_MESSAGE = "Message Sent Successfully.";
 			var file = Path.of(githubOutput);
 			if(file.getParent() != null) Files.createDirectories(file.getParent());
-			var lines = ("message-status=" + value).lines().toList();
-			if(lines.size() != 1)
-			  error = true;
+			var lines = ("message-status=" + status).lines().toList();
 			Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			System.out.println("Message - Status : " + value);
+			var lines = ("error-message=" + error).lines().toList();
+			Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
+			System.out.println("Message - Status : " + status);
 		}  catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		if(status == 400)
+		  
 	}
 }
