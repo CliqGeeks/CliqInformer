@@ -180,25 +180,34 @@ public class CliqInformer {
 		}
 		finally
 		{
-		  var githubOutput = System.getenv("GITHUB_OUTPUT");
-		  var file = Path.of(githubOutput);
-		  if(file.getParent() != null) Files.createDirectories(file.getParent());
-		  if(status == 400 && ERROR_MESSAGE.equals("Multiple Errors Occured"))
+		  try
 		  {
-			  var lines = ("message-status=" + status).lines().toList();
-		  	Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			  lines = ("error-message=" + ERROR_MESSAGE).lines().toList();
-			  Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			  System.out.println("Message - Status : " + status);
+		    var githubOutput = System.getenv("GITHUB_OUTPUT");
+		    var file = Path.of(githubOutput);
+		    if(file.getParent() != null) Files.createDirectories(file.getParent());
+		    if(status == 400 && ERROR_MESSAGE.equals("Multiple Errors Occured"))
+		    {
+			    var lines = ("message-status=" + status).lines().toList();
+		    	Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
+			    lines = ("error-message=" + ERROR_MESSAGE).lines().toList();
+			    Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
+			    System.out.println("Message - Status : " + status);
+		    }
+		    else
+		    {
+		      ERROR_MESSAGE = "Unknown Error Occured : " + ERROR_MESSAGE;
+		      var lines = ("message-status=" + status).lines().toList();
+		    	Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
+			    lines = ("error-message=" + ERROR_MESSAGE).lines().toList();
+			    Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
+			    System.out.println("Message - Status : " + status);
+		    }
 		  }
-		  else
+		  catch(Exception e)
 		  {
-		    ERROR_MESSAGE = "Unknown Error Occured : " + ERROR_MESSAGE;
-		    var lines = ("message-status=" + status).lines().toList();
-		  	Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			  lines = ("error-message=" + ERROR_MESSAGE).lines().toList();
-			  Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			  System.out.println("Message - Status : " + status);
+		    ERROR_MESSAGE = "Sorry we couldn't process your request due to a technical error. Please Try again later.";
+		    System.err.println("Unknown Error Occured : " + ERROR_MESSAGE);
+		    System.exit(1);
 		  }
 		}
 	}
