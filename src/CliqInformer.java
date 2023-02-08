@@ -207,7 +207,7 @@ public class CliqInformer {
 	}
 	
 	// used to write a Github Output so that the Shell Runner can Read
-	public static void writeGithubOutput(Integer Status , String ErrorMessage)
+	public static void writeGithubOutput(Integer Status , String ErrorMessage) throws IOException
 	{
 	  var githubOutput = System.getenv("GITHUB_OUTPUT");
     var file = Path.of(githubOutput);
