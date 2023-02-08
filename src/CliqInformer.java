@@ -160,7 +160,7 @@ public class CliqInformer {
 			if(status == 204)
 			  MESSAGE_SEND_FAILURE_ERROR = false;
 			if(INVALID_ENDPOINT_ERROR)
-			  ERRORna regarding github actions demo _MESSAGE = "Invalid Endpoint. Endpoint must be of format : <Zoho Cliq Channel API Endpoint>?zapikey=<Zoho Cliq Webhook Token>";
+			  ERROR_MESSAGE = "Invalid Endpoint. Endpoint must be of format : <Zoho Cliq Channel API Endpoint>?zapikey=<Zoho Cliq Webhook Token>";
 			else if(GITHUB_ERROR)
 			  ERROR_MESSAGE = "Environmental Variable GITHUB_OUTPUT missing";
 			else if(MESSAGE_SEND_FAILURE_ERROR)
