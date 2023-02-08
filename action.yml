@@ -101,6 +101,8 @@ outputs:
 runs:
   using: "composite"
   steps:
+      - name: Set Up Checkout
+        uses: actions/checkout@v1
       - name: Set Up JDK 19
         id: setup-jdk
         uses: actions/setup-java@v3
