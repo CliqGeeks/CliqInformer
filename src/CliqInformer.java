@@ -138,8 +138,6 @@ public class CliqInformer {
 				  BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
 				  String line;
 				  while((line = reader.readLine()) != null) {
-				    if(line.contains("\"message\":"))
-				      ERROR_MESSAGE = line.substring(line.indexOf(":")+1,line.length());
 					  responseContent.append(line);
 				  }
 			    reader.close();
@@ -153,20 +151,22 @@ public class CliqInformer {
 				  }
 				  reader.close();
 			  }
+			  if(status != 204)
+			    ERROR_MESSAGE = responseContent;
 			}
 			var githubOutput = System.getenv("GITHUB_OUTPUT");
 			if(Objects.nonNull(githubOutput))
 			    GITHUB_ERROR = false;
 			if(status == 204)
 			  MESSAGE_SEND_FAILURE_ERROR = false;
-			/*if(INVALID_ENDPOINT_ERROR)
-			  ERROR_MESSAGE = "Invalid Endpoint. Endpoint must be of format : <Zoho Cliq Channel API Endpoint>?zapikey=<Zoho Cliq Webhook Token>";
+			if(INVALID_ENDPOINT_ERROR)
+			  ERRORna regarding github actions demo _MESSAGE = "Invalid Endpoint. Endpoint must be of format : <Zoho Cliq Channel API Endpoint>?zapikey=<Zoho Cliq Webhook Token>";
 			else if(GITHUB_ERROR)
 			  ERROR_MESSAGE = "Environmental Variable GITHUB_OUTPUT missing";
 			else if(MESSAGE_SEND_FAILURE_ERROR)
-			  ERROR_MESSAGE = "Sorry, we couldn't process your request due to a technical error. Please try again later.";
+			  ERROR_MESSAGE = splitMessage(ERROR_MESSAGE);
 			else if(status == 204)
-			  ERROR_MESSAGE = "CliqInformer executed Successfully";*/
+			  ERROR_MESSAGE = "CliqInformer executed Successfully";
 			var file = Path.of(githubOutput);
 			if(file.getParent() != null) Files.createDirectories(file.getParent());
 			var lines = ("message-status=" + status).lines().toList();
@@ -186,23 +186,11 @@ public class CliqInformer {
 		    var githubOutput = System.getenv("GITHUB_OUTPUT");
 		    var file = Path.of(githubOutput);
 		    if(file.getParent() != null) Files.createDirectories(file.getParent());
-		    if(status == 400 && ERROR_MESSAGE.equals("Multiple Errors Occured"))
-		    {
-			    var lines = ("message-status=" + status).lines().toList();
-		    	Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			    lines = ("error-message=" + ERROR_MESSAGE).lines().toList();
-			    Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			    System.out.println("Message - Status : " + status);
-		    }
-		    else if(status != 204 || !ERROR_MESSAGE.equals("CliqInformer executed Successfully"))
+		    if(!INVALID_ENDPOINT_ERROR || !GITHUB_ERROR || status != 204)
 		    {
 		      ERROR_MESSAGE = "Unknown Error Occured : " + ERROR_MESSAGE;
-		      var lines = ("message-status=" + status).lines().toList();
-		    	Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			    lines = ("error-message=" + ERROR_MESSAGE).lines().toList();
-			    Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			    System.out.println("Message - Status : " + status);
 		    }
+		    writeGithubOutput(status,ERROR_MESSAGE);
 		  }
 		  catch(Exception e)
 		  {
@@ -211,5 +199,28 @@ public class CliqInformer {
 		    System.exit(1);
 		  }
 		}
+	}
+	
+	// To Split and Seperate the Message from the JSON
+	public static String splitMessage(String JSON)
+	{
+	  JSON = JSON.substring(JSON.indexOf("{"), JSON.indexOf("}"));
+	  String[] JSONArray = JSON.split(",");
+	  for(String s : JSONArray)
+	    if(s.contains("\"message\":"))
+	      return s.substring(s.indexOf(":")+1,s.length());
+	  return "Error Description not Provided";
+	}
+	
+	// used to write a Github Output so that the Shell Runner can Read
+	public static void writeGithubOutput(String Status , String ErrorMessage)
+	{
+	  var githubOutput = System.getenv("GITHUB_OUTPUT");
+    var file = Path.of(githubOutput);
+	  var lines = ("message-status=" + Status).lines().toList();
+		Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
+		lines = ("error-message=" + ErrorMessage).lines().toList();
+		Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
+		System.out.println("Message - Status : " + status);
 	}
 }
