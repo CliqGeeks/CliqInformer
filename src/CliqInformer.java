@@ -165,7 +165,7 @@ public class CliqInformer {
 			else if(MESSAGE_SEND_FAILURE_ERROR)
 			  ERROR_MESSAGE = "Sorry, we couldn't process your request due to a technical error. Please try again later.";
 			else if(status == 204)
-			  ERROR_MESSAGE = "Message Sent Successfully.";
+			  ERROR_MESSAGE = "CliqInformer executed Successfully";
 			var file = Path.of(githubOutput);
 			if(file.getParent() != null) Files.createDirectories(file.getParent());
 			var lines = ("message-status=" + status).lines().toList();
@@ -193,7 +193,7 @@ public class CliqInformer {
 		  }
 		  else
 		  {
-		    ERROR_MESSAGE = "Unknown Error Occured : " + ERRORMESSAGE;
+		    ERROR_MESSAGE = "Unknown Error Occured : " + ERROR_MESSAGE;
 		    var lines = ("message-status=" + status).lines().toList();
 		  	Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
 			  lines = ("error-message=" + ERROR_MESSAGE).lines().toList();

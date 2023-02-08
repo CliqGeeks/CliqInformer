@@ -255,11 +255,13 @@ runs:
       - name: "Displaying Output"
         id: display-output
         shell: bash
-        run: |
-          if ${{ steps.send-message.outputs.message-status == '204' }} 
+        run: | 
+          echo "${{steps.send-message.outputs.error-message}}"
+          if ${{ steps.send-message.outputs.message-status == '204' }}
           then 
             echo "Message sent to Cliq Successfully"
+            exit 0
           else
-            echo "Message Not Found"
+            echo "Message Send Request Failed"
+            exit 1
           fi
-          echo "${{steps.send-message.outputs.error-message}}"
