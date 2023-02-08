@@ -132,12 +132,7 @@ public class CliqInformer {
 			  OutputStream os = connection.getOutputStream();
 			  os.write(TextParams.getBytes());
 			  os.flush();
-			  os.close();I have tested all the Cases.
-check-suite Event alone is facing some Issue from my side,
-So I am not able to test it.
-Will update you the status of it.
-
-Other Events worked Fine
+			  os.close();
 			  status = connection.getResponseCode();
 			  if(status > 299) {
 				  BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
