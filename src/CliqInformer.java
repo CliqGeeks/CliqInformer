@@ -193,7 +193,7 @@ public class CliqInformer {
 			    Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
 			    System.out.println("Message - Status : " + status);
 		    }
-		    else
+		    else if(status != 204 || !ERROR_MESSAGE.equals("CliqInformer executed Successfully"))
 		    {
 		      ERROR_MESSAGE = "Unknown Error Occured : " + ERROR_MESSAGE;
 		      var lines = ("message-status=" + status).lines().toList();
