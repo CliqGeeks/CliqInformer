@@ -170,7 +170,7 @@ public class CliqInformer {
 			if(file.getParent() != null) Files.createDirectories(file.getParent());
 			var lines = ("message-status=" + status).lines().toList();
 			Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			var lines = ("error-message=" + error).lines().toList();
+			lines = ("error-message=" + ERROR_MESSAGE).lines().toList();
 			Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
 			System.out.println("Message - Status : " + status);
 		}  catch (MalformedURLException e) {
@@ -187,16 +187,16 @@ public class CliqInformer {
 		  {
 			  var lines = ("message-status=" + status).lines().toList();
 		  	Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			  var lines = ("error-message=" + error).lines().toList();
+			  lines = ("error-message=" + ERROR_MESSAGE).lines().toList();
 			  Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
 			  System.out.println("Message - Status : " + status);
 		  }
 		  else
 		  {
-		    error = "Unknown Error Occured : " + error;
+		    ERROR_MESSAGE = "Unknown Error Occured : " + ERRORMESSAGE;
 		    var lines = ("message-status=" + status).lines().toList();
 		  	Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-			  var lines = ("error-message=" + error).lines().toList();
+			  lines = ("error-message=" + ERROR_MESSAGE).lines().toList();
 			  Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
 			  System.out.println("Message - Status : " + status);
 		  }
