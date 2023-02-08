@@ -180,7 +180,7 @@ public class CliqInformer {
 		    var githubOutput = System.getenv("GITHUB_OUTPUT");
 		    var file = Path.of(githubOutput);
 		    if(file.getParent() != null) Files.createDirectories(file.getParent());
-		    if(INVALID_ENDPOINT_ERROR || GITHUB_ERROR || status != 204)
+		    if(MESSAGE_SEND_FAILURE_ERROR || status != 204)
 		    {
 		      ERROR_MESSAGE = "Unknown Error Occured : " + ERROR_MESSAGE;
 		    }
