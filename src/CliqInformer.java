@@ -154,7 +154,7 @@ public class CliqInformer {
 			var githubOutput = System.getenv("GITHUB_OUTPUT");
 			if(status == 204)
 			{
-			  if(githubOutput != null)
+			  if(Objects.nonNull(githubOutput))
 			    GITHUB_ERROR = false;
 			  MESSAGE_SEND_FAILURE_ERROR = false;
 			}
