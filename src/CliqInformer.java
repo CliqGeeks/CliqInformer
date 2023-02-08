@@ -25,7 +25,7 @@ public class CliqInformer {
 		boolean MESSAGE_SEND_FAILURE_ERROR = true;
 		boolean INVALID_ENDPOINT_ERROR = true;
 		boolean GITHUB_ERROR = true;
-		String ERROR_MESSAGE = new String("Multiple Errors Occur");
+		String ERROR_MESSAGE = new String("Multiple Errors Occured");
 		StringBuffer responseContent = new StringBuffer();
 		try {
 			String message;
@@ -163,7 +163,7 @@ public class CliqInformer {
 			else if(GITHUB_ERROR)
 			  ERROR_MESSAGE = "Environmental Variable GITHUB_OUTPUT missing";
 			else if(MESSAGE_SEND_FAILURE_ERROR)
-			  ERROR_MESSAGE = "Sorry, we couldn't process your request due to a technical error. Please try again later."
+			  ERROR_MESSAGE = "Sorry, we couldn't process your request due to a technical error. Please try again later.";
 			else if(status == 204)
 			  ERROR_MESSAGE = "Message Sent Successfully.";
 			var file = Path.of(githubOutput);
@@ -178,7 +178,28 @@ public class CliqInformer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if(status == 400)
-		  
+		finally
+		{
+		  var githubOutput = System.getenv("GITHUB_OUTPUT");
+		  var file = Path.of(githubOutput);
+		  if(file.getParent() != null) Files.createDirectories(file.getParent());
+		  if(status == 400 && ERROR_MESSAGE.equals("Multiple Errors Occured"))
+		  {
+			  var lines = ("message-status=" + status).lines().toList();
+		  	Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
+			  var lines = ("error-message=" + error).lines().toList();
+			  Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
+			  System.out.println("Message - Status : " + status);
+		  }
+		  else
+		  {
+		    error = "Unknown Error Occured : " + error;
+		    var lines = ("message-status=" + status).lines().toList();
+		  	Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
+			  var lines = ("error-message=" + error).lines().toList();
+			  Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
+			  System.out.println("Message - Status : " + status);
+		  }
+		}
 	}
 }
