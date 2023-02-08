@@ -159,14 +159,14 @@ public class CliqInformer {
 			    GITHUB_ERROR = false;
 			if(status == 204)
 			  MESSAGE_SEND_FAILURE_ERROR = false;
-			if(INVALID_ENDPOINT_ERROR)
+			/*if(INVALID_ENDPOINT_ERROR)
 			  ERROR_MESSAGE = "Invalid Endpoint. Endpoint must be of format : <Zoho Cliq Channel API Endpoint>?zapikey=<Zoho Cliq Webhook Token>";
 			else if(GITHUB_ERROR)
 			  ERROR_MESSAGE = "Environmental Variable GITHUB_OUTPUT missing";
 			else if(MESSAGE_SEND_FAILURE_ERROR)
 			  ERROR_MESSAGE = "Sorry, we couldn't process your request due to a technical error. Please try again later.";
 			else if(status == 204)
-			  ERROR_MESSAGE = "CliqInformer executed Successfully";
+			  ERROR_MESSAGE = "CliqInformer executed Successfully";*/
 			var file = Path.of(githubOutput);
 			if(file.getParent() != null) Files.createDirectories(file.getParent());
 			var lines = ("message-status=" + status).lines().toList();
