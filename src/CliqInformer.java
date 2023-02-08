@@ -160,12 +160,10 @@ Other Events worked Fine
 			  }
 			}
 			var githubOutput = System.getenv("GITHUB_OUTPUT");
-			if(status == 204)
-			{
-			  if(Objects.nonNull(githubOutput))
+			if(Objects.nonNull(githubOutput))
 			    GITHUB_ERROR = false;
+			if(status == 204)
 			  MESSAGE_SEND_FAILURE_ERROR = false;
-			}
 			if(INVALID_ENDPOINT_ERROR)
 			  ERROR_MESSAGE = "Invalid Endpoint. Endpoint must be of format : <Zoho Cliq Channel API Endpoint>?zapikey=<Zoho Cliq Webhook Token>";
 			else if(GITHUB_ERROR)
