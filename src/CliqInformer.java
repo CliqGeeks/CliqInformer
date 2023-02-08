@@ -204,8 +204,7 @@ public class CliqInformer {
 	    if(s.contains("\"message\":"))
 	      return s.substring(s.indexOf(":")+1,s.length());
 	  return "Error Description not Provided";
-	} as a pre-release
-This relea
+	}
 	
 	// used to write a Github Output so that the Shell Runner can Read
 	public static void writeGithubOutput(Integer Status , String ErrorMessage)
