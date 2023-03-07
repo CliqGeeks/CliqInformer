@@ -167,7 +167,7 @@ runs:
           then
             echo "DISCUSSION_COMMENT=${{ github.event.comment.body }}" >> $GITHUB_ENV
             echo "COMMENT_URL=${{ github.event.comment.html_url }}" >> $GITHUB_ENV
-            echo "DISCUSSION_TITLE=${{ github.event.discussion.title }}" >> $GITHUB_ENV
+            echo "DISCUSSION=${{ github.event.discussion.title }}" >> $GITHUB_ENV
             echo "DISCUSSION_URL=${{ github.event.discussion.html_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.discussion-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'fork' }}
@@ -329,6 +329,8 @@ runs:
           elif ${{env.message == ''}}
           then
             echo "CUSTOM_MESSAGE=" >> $GITHUB_ENV
+          else
+            echo "CUSTOM_MESSAGE=${{ env.message}}" >> $GITHUB_ENV
           fi
       - name: "Running the Cliq Integration"
         id: send-message

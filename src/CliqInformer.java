@@ -60,8 +60,6 @@ public class CliqInformer {
 			{
 				Action = "made";
 			}
-			System.out.println(Actor + " " + CustomMessage + " " + Event + Repository);
-			System.out.println(System.getenv("GITHUB_ACTOR") + " " + System.getenv("CUSTOM_MESSAGE") + " " + System.getenv("GITHUB_EVENT_NAME") + " " + System.getenv("GITHUB_REPOSITORY") + System.getenv("ACTION"));
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
 			message = CustomMessage;
 			if(CustomMessage != null)
@@ -214,7 +212,7 @@ public class CliqInformer {
 					else if(Event.equals("Discussion Comment"))
 					{
 						String Discusser = (String) System.getenv("GITHUB_ACTOR");
-						String DiscussionTitle = (String) System.getenv("DISCUSSION_TITLE");
+						String DiscussionTitle = (String) System.getenv("DISCUSSION");
 						String DiscussionComment = (String) System.getenv("DISCUSSION_COMMENT");
 						String DiscussionURL = (String) System.getenv("DISCUSSION_URL");
 						String CommentURL = (String) System.getenv("COMMENT_URL");
@@ -578,7 +576,7 @@ public class CliqInformer {
 						}
 						else if(Action.equals("deleted"))
 						{
-							message = "[" + Releaser + "](" + ServerURL + Releaser + ") has deleted a release [" + ReleaseName + " " + ReleaseTagName + "](" + ReleaseURL + ")";
+							message = "[" + Releaser + "](" + ServerURL + Releaser + ") has deleted a release " + ReleaseName + " " + ReleaseTagName ;
 						}
 						message = message + " \\n" + ReleaseURL;
 					}
@@ -629,10 +627,73 @@ public class CliqInformer {
 				{
 					message = message.replace("(me)","[" + Actor + "](" + ActorURL + ")");
 					message = message.replace("(repo)","[" + Repository + "](" + RepositoryURL + ")" );
+					if(Event.equals("Create") || Event.equals("Delete"))
+						Event = Event + "d";
 					message = message.replace("(event)","*" + Event + "*");
 					message = message.replace("(action)",Action);
+					message = message.replace("(ref)",(String) System.getenv("GITHUB_REF_TYPE") + " " + System.getenv("GITHUB_REF_NAME"));
+					message = message.replace("(workflow)",(String) System.getenv("GITHUB_WORKFLOW"));
+					if(System.getenv("BRANCH_RULE") != null)
+						message = message.replace("(rule)",(String) System.getenv("BRANCH_RULE"));
+					else
+						message = message.replace("(rule)","");
+					if(System.getenv("LABEL_NAME") != null)
+						message = message.replace("(label)",(String) System.getenv("LABEL_NAME"));
+					if(System.getenv("MILESTONE") != null)
+						message = message.replace("(milestone)",(String) System.getenv("MILESTONE"));
+					else
+						message = message.replace("(milestone)","");
+					if(System.getenv("RELEASE_NAME") != null)
+						message = message.replace("(release)",(String) System.getenv("RELEASE_NAME"));
+					else
+						message = message.replace("(release)","");
+					if(System.getenv("REGISTRY_PACKAGE_NAME") != null)
+						message = message.replace("(package)",(String) System.getenv("REGISTRY_PACKAGE_NAME"));
+					else
+						message = message.replace("(package)","");
+					if(System.getenv("PULL_REQUEST_TITLE") != null)
+						message = message.replace("(pull)",(String) System.getenv("PULL_REQUEST_TITLE"));
+					if(System.getenv("ISSUE_TITLE") != null && Event.equals("issue_comment") && ((String)System.getenv("ISSUE_TYPE")).equals("PULL_REQUEST"))
+						message = message.replace("(pull)",(String) System.getenv("ISSUE_TITLE"));
+					else
+						message = message.replace("(pull)","");
+					if(System.getenv("ISSUE_TITLE") != null)
+						message	= message.replace("(issue)",(String) System.getenv("ISSUE_TITLE"));
+					else
+						message = message.replace("(issue)","");
+					if(System.getenv("CHECK_RUN_NAME") != null)
+						message = message.replace("(run)",(String) System.getenv("CHECK_RUN_NAME"));
+					else
+						message = message.replace("(run)","");
+					if(System.getenv("DEPLOYMENT_ENV") != null)
+						message = message.replace("(deployment)",(String) System.getenv("DEPLOYMENT_ENV"));
+					else
+						message = message.replace("(deployment)","");
+					if(System.getenv("STATUS") != null)
+						message = message.replace("(status)",(String) System.getenv("STATUS"));
+					else
+						message = message.replace("(status)","");
+					if(System.getenv("BRANCH_NAME") != null)
+						message = message.replace("(branch)", (String) System.getenv("BRANCH_TYPE") + " " + System.getenv("BRANCH_NAME"));
+					else
+						message = message.replace("(branch)","");
+					if(System.getenv("DISCUSSION") != null)
+						message = message.replace("(discussion)",(String) System.getenv("DISCUSSION"));
+					else
+						message = message.replace("(discussion)","");
+					if(System.getenv("CATEGORY_NAME") != null)
+						message = message.replace("(category)", (String) System.getenv("CATEGORY_NAME"));
+					else
+						message = message.replace("(category)","");
+					if(System.getenv("ASSIGNED_USER") != null)
+						message = message.replace("(assignee)", (String) System.getenv("ASSIGNED_USER"));
+					else
+						message = message.replace("(assignee)","");
+					if(System.getenv("ASSIGNED_LABEL") != null)
+						message = message.replace("(label)", (String) System.getenv("ASSIGNED_LABEL"));
+					else
+						message = message.replace("(label)","");
 				}
-				System.out.println(message);
 				ArrayList<String> messages = new ArrayList<String>();
 				for(int i = 0 ; i < message.length() ;)
 				{
@@ -678,7 +739,6 @@ public class CliqInformer {
 				  os.write(TextParams.getBytes());
 				  os.flush();
 				  os.close();
-				  System.out.println(TextParams);
 				  status = connection.getResponseCode();
 				  if(status > 299) {
 					  BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
@@ -762,6 +822,5 @@ public class CliqInformer {
 		Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
 		lines = ("error-message=" + ErrorMessage).lines().toList();
 		Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
-		System.out.println("Message - Status : " + Status);
 	}
 }
