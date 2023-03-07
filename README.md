@@ -26,11 +26,12 @@ Upon Successfully Providing the Inputs as per Criteria, The Message will be Succ
 
 The Github Actions that Trigger an Event are listed below among which all Events are Supported by CliqInformer
 
-|    branch_protection_rule    |          check_run          |          check_suite         |            create            |           delete            |          deployment         |      deployment_status      |
-|            :----:            |           :----:            |            :----:            |            :----:            |           :----:            |            :----:            |           :----:            |
-| **discussion**               | **discussion_comment**      | **fork**                     | **gollum**                   | **issue_comment**           | **issues**                  | **label**                     |
-| **merge_group**              | **milestone**               | **page_build**               | **project (Classic)**        | **project_card (Classic)**  | **project_column (Classic)**| **public**                    |
-| **pull_request**             | **pull_request_comment**    | **pull_request_review**      |**pull_request_review_comment**| **pull_request_target**    | **push**                      | **registry_package**          |
-| **release**                  | **repository_dispatch**     | **schedule**                 | **status**                   | **watch**                   | **workflow_dispatch**                               |                             |
+|    branch_protection_rule    |          check_run          |          check_suite         |            create            |           delete            |
+|            :----:            |           :----:            |            :----:            |            :----:            |           :----:            |
+| **deployment**               | **deployment_status**       | **discussion**               | **discussion_comment**       | **fork**                    |
+| **gollum**                   | **issue_comment**           | **issues**                   | **label**                    | **milestone**               |
+| **page_build**               | **public**                  | **pull_request**             | **pull_request_comment**     | **pull_request_review**     |
+|**pull_request_review_comment**| **pull_request_target**    | **push**                     | **registry_package**         | **release**                 |
+| **repository_dispatch**     | **schedule**                 | **status**                   | **watch**                    | **workflow_dispatch**       |
 
 To use Custom Message for an Event event Specify the custom message as event-message Input to CliqInformer (for eg. push-message for custom message for a push event)
