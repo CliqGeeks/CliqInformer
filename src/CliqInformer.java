@@ -342,7 +342,7 @@ public class CliqInformer {
 							}
 							else if (Action.equals("deleted")) 
 							{
-								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has deleted a new comment to the issue - [" + IssueName + "](" + IssueURL + ")";
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has deleted a comment to the issue - [" + IssueName + "](" + IssueURL + ")";
 							}
 							else if(Action.equals("edited"))
 							{
@@ -477,7 +477,7 @@ public class CliqInformer {
 						}
 						else if(Action.equals("closed"))
 						{
-							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has closed the pull request " + PullRequest ;
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has closed the pull request (" + PullRequest + ")[" + PullRequestURL + "]";
 						}
 						else if(Action.equals("milestoned"))
 						{
