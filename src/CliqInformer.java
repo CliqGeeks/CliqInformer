@@ -477,7 +477,7 @@ public class CliqInformer {
 						}
 						else if(Action.equals("closed"))
 						{
-							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has closed the pull request (" + PullRequest + ")[" + PullRequestURL + "]";
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has closed the pull request [" + PullRequest + "](" + PullRequestURL + ")";
 						}
 						else if(Action.equals("milestoned"))
 						{
