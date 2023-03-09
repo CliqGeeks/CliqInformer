@@ -176,6 +176,9 @@ runs:
             echo "message=${{inputs.fork-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'gollum' }}
           then
+            echo "PAGES<<EOF" >> $GITHUB_ENV
+            echo '${{ toJSON(github.event.pages) }}' >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
             echo "message=${{inputs.gollum-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issue_comment' && !github.event.issue.pull_request }}
           then

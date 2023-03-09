@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Objects;
 public class CliqInformer {
 	public static void main(String args[]) {
@@ -244,7 +245,40 @@ public class CliqInformer {
 					else if(Event.equals("Gollum"))
 					{
 						String PageHandler = (String) System.getenv("GITHUB_ACTOR");
-						message = "A few changes has been made to the [Wiki pages](" + RepositoryURL + "/wiki) of [" + Repository + "](" + RepositoryURL + ") by " + "[" + PageHandler + "](" + ServerURL + PageHandler + ")";
+						String Pages = (String) System.getenv("PAGES");
+						ArrayList<HashMap<String,String>> PageArray = new ArrayList<HashMap<String,String>>();
+						HashMap<String,String> Page = new HashMap<String,String>();
+						for (String Line: Pages.split("\n"))
+						{
+						    if(Line.contains("title") || Line.contains("html_url") || Line.contains("action"))
+						    {
+								String[] keyValuePair= LineBreaker(Line);
+								Page.put(keyValuePair[0],keyValuePair[1]);
+						    }
+						    if(Line.contains("}"))
+						    {
+								PageArray.add(Page);
+                				Page = new HashMap<String,String>();
+						    }
+						}
+						if(PageArray.size() > 1)
+						{
+							message = "A few changes has been made to the [Wiki pages](" + RepositoryURL + "/wiki) of [" + Repository + "](" + RepositoryURL + ") by [" + PageHandler + "](" + ServerURL + PageHandler + ")";
+							message = message + "\\nHere is a list of the Changes\\n";
+						}
+						for (HashMap<String,String> PageDetails : PageArray)
+						{
+						    if(PageDetails.get("title").toLowerCase().contains("_footer"))
+							message = message + "\\n:task: The [Footer](" + PageDetails.get("html_url") + ") has been " + PageDetails.get("action");
+						    else if(PageDetails.get("title").toLowerCase().contains("_sidebar"))
+							message = message + "\\n:task: The [Sidebar](" + PageDetails.get("html_url") + ") has been " + PageDetails.get("action");
+						    else
+							message = message + "\\n:task: The Page [" + PageDetails.get("title") + "](" + PageDetails.get("html_url") + ") has been " + PageDetails.get("action") ;
+						}
+						if(PageArray.size() == 1)
+						{
+							message = message + " at [" + Repository + "](" + RepositoryURL + ") by [" + PageHandler + "](" + ServerURL + PageHandler + ")";
+						}
 						//message = message + " \\n" + RepositoryURL;
 					}
 					else if(Event.equals("Issues"))
@@ -384,6 +418,8 @@ public class CliqInformer {
 						String NewWord = new String();
 						if(Action.equals("created"))
 							NewWord = "new ";
+						else if(Action.equals("opened"))
+							Action =  "reopened";
 						else if(Action.equals("deleted"))
 							MilestoneURL = RepositoryURL + "/milestones";
 						message = "[" + Milestoner + "](" + ServerURL + Milestoner + ") has " + Action + " a " + NewWord + "milestone - [" + MilestoneName + "](" + MilestoneURL +")";
@@ -823,4 +859,46 @@ public class CliqInformer {
 		lines = ("error-message=" + ErrorMessage).lines().toList();
 		Files.write(file, lines, UTF_8 , CREATE , APPEND , WRITE);
 	}
+
+	//to Split JSON for Single Line Key Value Pairs
+    public static String[] LineBreaker(String Line)
+    { 
+        Boolean isBetweenQuotes = false;
+        Integer count = 0;
+        Integer startindex = 0;
+        Character prec = '_';
+        Integer len = 0;
+        String key = new String();
+        String value = new String();
+        for (Character c : Line.toCharArray())
+        {
+            if(prec != '\\' && c == '"')
+            {
+                isBetweenQuotes = !isBetweenQuotes;
+                if(isBetweenQuotes)
+                    startindex = len;
+                else
+                {
+                    if(count % 4 == 0)
+                    {
+                        key = Line.substring(startindex+1,len);
+                    }
+                    else if(count % 4 == 1)
+                    {
+                        value = Line.substring(startindex+1,Line.lastIndexOf("\""));
+                    }
+                    count++;
+                }
+            }
+            prec = c;
+            len++;
+        }
+        String[] Array = new String[2];
+        if(key != "" && value != "")
+        {
+            Array[0] = key;
+            Array[1] = value;
+        }
+        return Array;
+    }
 }
